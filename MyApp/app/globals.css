@@ -1,0 +1,12 @@
+body{
+    
+}
+#navbar{
+    background-color: gray;
+    padding: 25px;
+    right: 100%;
+}
+#navbar Link{
+    margin-right: 10px;
+    text-decoration: none;
+}
