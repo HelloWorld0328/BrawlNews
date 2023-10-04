@@ -1,2 +1,2 @@
-# linkchat
-chatting app
+# brawlstarsNews
+브롤뉴스
