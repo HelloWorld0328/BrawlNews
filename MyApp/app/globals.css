@@ -1,12 +1,12 @@
-body{
-    
-}
+
 #navbar{
     background-color: gray;
     padding: 25px;
     right: 100%;
+    max-width: 500%; /* 최대 너비 100% */ 
+
 }
-#navbar Link{
-    margin-right: 10px;
+.nv{
+    color: aliceblue;
     text-decoration: none;
 }
