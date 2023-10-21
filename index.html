@@ -1,114 +1,98 @@
 <!DOCTYPE html>
-<html lang="ko" id="html">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>BrawlNews</title>
-        <style>
-            #navbar{
-                padding: 20px;
-                background-color: gray;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="navbar">
-            <div id="home" onclick="goHome()
-                ">홈</div>
-            <div id="home" onclick="goNew()
-                ">작성</div>
-            
-        </div>
-        <div id="app"></div>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrawlNews</title>
+  <style>
+    #navbar {
+      padding: 20px;
+      background-color: gray;
+    }
+    .nowrap {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <span id="home" onclick="goHome()" class="nowrap">홈</span>
+    <span id="new" onclick="goNew()" class="nowrap">작성</span>
+  </nav>
+  <div id="app"></div>
 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    function goNew() {
+      $("#app").html(`
+        이름<br><input id="nameForm" type="text"><br><br>
+        제목<br><input id="titleForm" type="text"><br><br>
+        내용<br><textarea id="contentForm" rows="8" cols="80"></textarea><br><br>
+        <button id="send" onclick="sendPost()">저장</button>
+      `);
+    }
+
+    function sendPost() {
+      var name = $("#nameForm").val();
+      var title = $("#titleForm").val();
+      var content = $("#contentForm").val();
+
+      var send = {
+        name: name,
+        title: title,
+        content: content,
+      };
+
+      $.ajax({
+        type: "POST",
+        url: "/upload",
+        data: JSON.stringify(send),
+        contentType: "application/json",
+        success: function(response) {
+          console.log("서버로부터의 응답: " + JSON.stringify(response));
+          goHome();
+        },
+        error: function(error) {
+          console.error("오류 발생: " + JSON.stringify(error));
+        },
+      });
+    }
+
+    function goHome() {
+      $.ajax({
+        url: '/posts',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          $("#app").html(""); // 화면 초기화
+
+          // 요청이 성공했을 때 실행할 코드
+          $.each(data, function(index, item) {
+            var post = $("<li>", {
+              id: index,
+              onclick: `showContent('${data[index].name}', '${data[index].title}', '${data[index].content}')`,
+              text: data[index].title,
+            });
+            $("#app").append(post);
+          });
+        },
+        error: function(xhr, status, error) {
+          // 요청이 실패했을 때 실행할 코드
+          console.log('에러: ' + error);
+        },
+      });
+    }
+
+    function showContent(name, title, content) {
+      $("#app").html(`
+        <h1>${title}</h1>
+        <h3>글쓴이: ${name}</h3>
+        <h4 style="white-space: pre-line;">${content}</h4>
+      `);
+    }
+
+    // 페이지 로드 시 홈 화면 초기화
+    goHome();
+  </script>
 </body>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script>
-        function goNew(){
-            $("#app").html(`이름<br><input id="nameForm" type="text"><br><br>
-            제목<br><input id="titleForm" type="text"><br><br>
-            내용<br><textarea id="contentForm" rows="8" cols="80"></textarea><br><br>
-            <button id="send" onclick="sendpost()">저장</button>`)
-            
-        }
-        function sendpost(){
-            console.log("Fdfs")
-            var name=$("#nameForm").val()
-            var title=$("#titleForm").val()
-            var content=$("#contentForm").val()
-            console.log(name,title,content)
-            var send={
-                name:name,
-                title:title,
-                content:content
-            }
-            $.ajax({
-                type: "POST", // POST 메서드 사용
-                url: "/upload", // POST 요청을 보낼 API 엔드포인트 URL
-                data: JSON.stringify(send), // 데이터를 JSON 문자열로 변환
-                contentType: "json", // 요청의 Content-Type 설정
-                success: function(response) {
-                    // 성공적으로 응답을 받았을 때 실행할 코드
-                    console.log("서버로부터의 응답: " + JSON.stringify(response));
-                },
-                error: function(error) {
-                    // 오류 발생 시 실행할 코드
-                    console.error("오류 발생: " + JSON.stringify(error));
-                }
-                });
-        }
-        function goHome(){
-            $.ajax({
-            url: '/',
-            method: 'GET',
-            dataType: 'html',
-            success: function(data) {
-                document.open()
-                document.write(data)
-                document.close()
-            },
-            error: function(xhr, status, error) {
-                // 요청이 실패했을 때 실행할 코드
-                console.log('에러: ' + error);
-            }
-        });
-        }
-        //내용표시함수
-        function sct(name,title,content){
-            /**showcontent*/
-            $("#app").html(`
-                        <h1>${title}</h1>
-                        <h3>글쓴이:${name}</h3>
-                        <h4 style="white-space: pre-line;">${content}</h4>
-                    
-            `)
-
-        }
-        //홈 화면 게시물 가져오기
-        $.ajax({
-            url: "/posts",
-            method: "GET",
-            dataType: "json",
-            success: function(data) {
-                console.log(data);
-                // 요청이 성공했을 때 실행할 코드
-                $.each(data, function(index, item) {
-                    var post = $("<li>", {
-                    id: index,
-                    onclick:`sct('${data[index].name}','${data[index].title}','${data[index].content}')`,
-                    content:data[index].content,
-                    text: data[index].title
-                });
-                $("#app").append(post);
-
-                // 생성한 div 요소를 페이지에 추가합니다.
-                });
-            },
-            error: function(xhr, status, error) {
-                // 요청이 실패했을 때 실행할 코드
-                console.log("에러: " + error);
-            }
-        });
-
-    </script>
 </html>
