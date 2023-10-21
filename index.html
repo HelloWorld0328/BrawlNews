@@ -18,11 +18,16 @@
   <nav id="navbar">
     <span id="home" onclick="goHome()" class="nowrap">홈</span>
     <span id="new" onclick="goNew()" class="nowrap">작성</span>
+    <span id="brawlnews" onclick="showInfo()">브롤뉴스</span>
   </nav>
   <div id="app"></div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
+  function showInfo(){
+    $("#app").html(`<h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2><h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2><h2>주고 받을수 있게 도와줍니다.</h2>`)
+  }
+
     function goNew() {
       $("#app").html(`
         이름<br><input id="nameForm" type="text"><br><br>
@@ -35,7 +40,7 @@
     function sendPost() {
       var name = $("#nameForm").val();
       var title = $("#titleForm").val();
-      var content = $("#contentForm").val();
+      var content = $("#contentForm").val().replace(/\n/g, "\\n");
 
       var send = {
         name: name.replace(/(['"])/g, "\\$1"),
