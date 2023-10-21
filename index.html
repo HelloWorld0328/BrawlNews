@@ -38,11 +38,11 @@
       var content = $("#contentForm").val();
 
       var send = {
-        name: name,
-        title: title,
-        content: content,
+        name: name.replace(/(['"])/g, "\\$1"),
+        title: title.replace(/(['"])/g, "\\$1"),
+        content: content.replace(/(['"])/g, "\\$1"),
       };
-
+      console.log(JSON.stringify(send))
       $.ajax({
         type: "POST",
         url: "/upload",
