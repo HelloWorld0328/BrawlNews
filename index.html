@@ -38,9 +38,9 @@
     }
 
     function sendPost() {
-      var name = $("#nameForm").val();
-      var title = $("#titleForm").val();
-      var content = $("#contentForm").val().replace(/\n/g, "\\n");
+      var name = $("#nameForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');;
+      var title = $("#titleForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');;
+      var content = $("#contentForm").val().replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');;
 
       var send = {
         name: name.replace(/(['"])/g, "\\$1"),
