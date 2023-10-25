@@ -25,14 +25,23 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
     function showInfo(){
-      $("#app").html(`<h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2><h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2><h2>주고 받을수 있게 도와줍니다.</h2>`)
+      $("#app").html(`
+      <h1>브롤뉴스 정보</h1>
+      <h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2>
+      <h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2>
+      <h2>주고 받을수 있게 도와줍니다.</h2>
+      <br>
+      <h1>개발도구</h1>
+      <h3>Made by 류동윤</h3>
+      <h3>FrontEnd:JQuery|Vanila css,html</h3>
+      <h3>BackEnd:Express</h3>`)
     }
 
     function goNew() {
       $("#app").html(`
         이름<br><input id="nameForm" type="text"><br><br>
         제목<br><input id="titleForm" type="text"><br><br>
-        내용<br><textarea id="contentForm" rows="8" cols="80"></textarea><br><br>
+        내용<br><textarea id="contentForm" style="width: 90%; height: 150px; padding: 10px;"></textarea><br><br>
         <button id="send" onclick="sendPost()">저장</button>
       `);
     }
