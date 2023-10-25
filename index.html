@@ -24,9 +24,9 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
-  function showInfo(){
-    $("#app").html(`<h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2><h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2><h2>주고 받을수 있게 도와줍니다.</h2>`)
-  }
+    function showInfo(){
+      $("#app").html(`<h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2><h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2><h2>주고 받을수 있게 도와줍니다.</h2>`)
+    }
 
     function goNew() {
       $("#app").html(`
@@ -38,19 +38,19 @@
     }
 
     function sendPost() {
-      var name = $("#nameForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');;
-      var title = $("#titleForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');;
-      var content = $("#contentForm").val().replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');;
+      var name = $("#nameForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      var title = $("#titleForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      var content = $("#contentForm").val().replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt');
 
       var send = {
         name: name.replace(/(['"])/g, "\\$1"),
         title: title.replace(/(['"])/g, "\\$1"),
         content: content.replace(/(['"])/g, "\\$1"),
       };
-      console.log(JSON.stringify(send))
+      console.log(JSON.stringify(send));
       $.ajax({
         type: "POST",
-        url: "/upload",
+        url: "https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/upload",
         data: JSON.stringify(send),
         contentType: "application/json",
         success: function(response) {
@@ -65,7 +65,7 @@
 
     function goHome() {
       $.ajax({
-        url: '/posts',
+        url: 'https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/posts',
         method: 'GET',
         dataType: 'json',
         success: function(data) {
