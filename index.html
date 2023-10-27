@@ -12,6 +12,7 @@
       font-weight: 400;
       src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff') format('woff');
     }
+    
     table {
     border-collapse: collapse;
     border-radius: 10px;
@@ -29,30 +30,56 @@
     border-radius: 10px;
   }
     /* @import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css); */
-    #navbar {
-      padding: 20px;
-      background-color: gray;
+    
+    /* #navbar {
+      /* padding: 20px; */
+      /* background-color: gray; */
+    /*} */
+    .nocenter{
+      text-align: left;
     }
     .nowrap {
       white-space: nowrap;
     }
     body{
       font-family: 'Godo', sans-serif;
-      text-align: center;
+      
     }
     span{
       font-weight: bold;
       font-size: larger;
     }
+    #navToApp{
+      padding: 30px;
+    }
+    #logo{
+      width: 50px;
+      height: 50px;
+      margin-bottom: -15px;
+    }
+    #app{
+      text-align: center;
+      
+    }
+    .nv{
+      margin-bottom: 100px;
+      color: gray;
+      
+    }
+    
   </style>
 </head>
 <body>
   <nav id="navbar">
-    <span id="home" onclick="goHome()" class="nowrap">홈</span>
-    <span id="new" onclick="goNew()" class="nowrap">작성</span>
-    <span id="brawlnews" onclick="showInfo()">정보</span>
-    <span id="shortkey" onclick="shortkey()">단축키</span>
+    <img src="https://i.ibb.co/swDxGsv/2023-10-27-083110.png" alt="logo" id="logo">
+    <span class="nv" id="home" onclick="goHome()" class="nowrap">홈</span>
+    <span class="nv" id="new" onclick="goNew()" class="nowrap">작성</span>
+    <span class="nv" id="brawlnews" onclick="showInfo()">정보</span>
+    <span class="nv" id="shortkey" onclick="shortkey()">단축키</span>
   </nav>
+  <div id="navToApp">
+
+  </div>
   <div id="app"></div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -131,10 +158,10 @@
     function goNew() {
       page="new"
       $("#app").html(`
-        <input placeholder="이름입력" id="nameForm" type="text"><br><br>
-        <input placeholder="재목입력" id="titleForm" type="text"><br><br>
-        <textarea placeholder="내용입력" id="contentForm" style="width: 80%; height: 150px; "></textarea><br><br>
-        <button id="send" onclick="sendPost()">저장</button>
+        <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"><br><br>
+        <input class="nocenter" placeholder="재목입력" id="titleForm" type="text"><br><br>
+        <textarea class="nocenter" placeholder="내용입력" id="contentForm" style="width: 80%; height: 150px; "></textarea><br><br>
+        <button class="nocenter" id="send" onclick="sendPost()">저장</button>
       `);
     }
 
