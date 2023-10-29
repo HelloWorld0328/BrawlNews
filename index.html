@@ -14,27 +14,21 @@
     }
     
     table {
-    border-collapse: collapse;
-    border-radius: 10px;
-    margin: 0 auto;
-  }
+      border-collapse: collapse;
+      border-radius: 10px;
+      margin: 0 auto;
+    }
 
-  th, td {
-    border: 1px solid #000;
-    padding: 8px;
-    text-align: left;
-  }
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+    }
 
-  /* 셀에 둥근 보더 효과 적용 */
-  th, td {
-    border-radius: 10px;
-  }
-    /* @import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css); */
-    
-    /* #navbar {
-      /* padding: 20px; */
-      /* background-color: gray; */
-    /*} */
+    th, td {
+      border-radius: 10px;
+    }
+
     .nocenter{
       text-align: left;
     }
@@ -66,7 +60,6 @@
       color: gray;
       
     }
-    
   </style>
 </head>
 <body>
@@ -102,8 +95,8 @@
         if(event.altKey && event.key==='s'){
           shortkey()
         }
-
     });
+
     function shortkey(){
       $("#app").html(`
       <table>
@@ -130,7 +123,7 @@
     <tr>
         <td>alt+n</td>
         <td>글 작성하기</td>
-        <td>작성화면에서 누르면 작성하던 글이 초기화되니 주의</td>
+        <td>작성화면에서 누륀면 작성하던 글이 초기화되니 주의</td>
     </tr>
     <tr>
         <td>alt+s</td>
@@ -141,6 +134,7 @@
       
       `)
     }
+
     function showInfo(){
       page="info"
       $("#app").html(`
@@ -199,32 +193,77 @@
         dataType: 'json',
         success: function(data) {
           $("#app").html(""); // 화면 초기화
-
-          // 요청이 성공했을 때 실행할 코드
           $.each(data, function(index, item) {
             var post = $("<h3>", {
               id: index,
-              onclick: `showContent('${data[index].name}', '${data[index].title}', '${data[index].content}')`,
+              onclick: `showContent('${data[index].name}', '${data[index].title}', '${data[index].content}', '${data[index].id}','${data[index].comment}')`,
               text: data[index].title,
             });
             $("#app").append(post);
           });
         },
         error: function(xhr, status, error) {
-          // 요청이 실패했을 때 실행할 코드
           console.log('에러: ' + error);
         },
       });
     }
+    
+    function sendComment(id) {
+      var name = $("#nameForm").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      var content = $("#contentForm").val().replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt');
 
-    function showContent(name, title, content) {
-      var page="look"
-      $("#app").html(`
-        <h1>${title}</h1>
-        <h3>글쓴이: ${name}</h3>
-        <h4 style="white-space: pre-line;">${content}</h4>
-      `);
+      var send = {
+        name: name.replace(/(['"])/g, "\\$1"),
+        content: content.replace(/(['"])/g, "\\$1"),
+        id: id
+      };
+      console.log(JSON.stringify(send));
+      $.ajax({
+        type: "POST",
+        url: "https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/comment",
+        data: JSON.stringify(send),
+        contentType: "application/json",
+        success: function(response) {
+          console.log("서버로부터의 응답: " + JSON.stringify(response));
+        },
+        error: function(error) {
+          console.error("오류 발생: " + JSON.stringify(error));
+        },
+      });
     }
+
+    function showContent(name, title, content, id, comments) {
+  var page = "look";
+
+  // var commentList = '';
+  // if (comments) {
+  //   for (var key in comments) {
+  //     if (comments.hasOwnProperty(key)) {
+  //       var comment = comments[key];
+  //       commentList += `<p>${comment.name}: ${comment.comment}</p>`;
+  //     }
+  //   }
+  // }
+
+  $("#app").html(`
+    <h1>${title}</h1>
+    <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}</h3>
+    <h4 style="white-space: pre-line;">${content}</h4>
+
+    
+  `);
+}
+
+//댓글에서 추가될 내용
+// <h3>댓글</h3>
+// <div id="comments">${commentList}</div>
+    // <br>
+    // <input id="comment-name" placeholder="이름">
+    // <textarea id="comment-content" placeholder="댓글 내용" style="width: 60%; height: 50px;"></textarea>
+    // <button onclick="sendComment(${id})">댓글 달기</button>
+
+
+
 
     // 페이지 로드 시 홈 화면 초기화
     goHome();
