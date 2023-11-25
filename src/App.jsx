@@ -145,7 +145,11 @@ response.data.slice().reverse().forEach((item, index) => {
   };
 
   const showContent = (name, title, content, id, comments) => {
-    let _content=content.replace(/\\(["'\\])/g, '$1')
+    let _content=content.replace(/\\(["'\\nt])/g, (match, p1) => {
+      if (p1 === 'n') return '\n';
+      if (p1 === 't') return '\t';
+      return p1;
+    });
     document.getElementById("app").innerHTML = `
       <h1>${title}</h1>
       <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}</h3>
