@@ -160,7 +160,7 @@ response.data.slice().reverse().forEach((item, index) => {
   return (
     <div>
       <img src="https://i.ibb.co/swDxGsv/2023-10-27-083110.png" alt="logo" id="logo" />
-      <span className="nv nowrap" id="home" onClick={goHome}>홈&emsp;</span>
+      <span className="nv nowrap" id="home" onClick={goHome}>홈&nbsp;&nbsp;</span>
       
       <span className="nv nowrap" id="new" onClick={goNew}>작성&nbsp;&nbsp;</span>
       <span className="nv nowrap" id="brawlnews" onClick={showInfo}>정보&nbsp;&nbsp;</span>
