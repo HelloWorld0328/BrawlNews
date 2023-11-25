@@ -145,10 +145,11 @@ response.data.slice().reverse().forEach((item, index) => {
   };
 
   const showContent = (name, title, content, id, comments) => {
+    let _content=content.replace(/\\(["'\\])/g, '$1')
     document.getElementById("app").innerHTML = `
       <h1>${title}</h1>
       <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}</h3>
-      <h4 style="white-space: pre-line;">${content}</h4>
+      <h4 style="white-space: pre-line;" id="content">${_content}</h4>
     `;
   };
 
