@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-
 const App = () => {
+  const server="https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app"
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
+    goHome()
     document.addEventListener("keydown", handleKeyPress);
-    goHome();
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
+      
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleKeyPress = (event) => {
@@ -109,11 +111,11 @@ const App = () => {
     const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const content = document.getElementById("contentForm").value.replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
     const send = {
       name: name.replace(/(['"])/g, "\\$1"),
       title: title.replace(/(['"])/g, "\\$1"),
       content: content.replace(/(['"])/g, "\\$1"),
+      views: 0
     };
 
     axios.post("https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/upload", send)
@@ -131,32 +133,45 @@ const App = () => {
     axios.get('https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/posts')
       .then(response => {
         document.getElementById("app").innerHTML = "";
-response.data.slice().reverse().forEach((item, index) => {
-  const post = document.createElement("h3");
-  post.id = index;
-  post.textContent = item.title;
-  post.addEventListener('click', () => showContent(item.name, item.title, item.content, item.id, item.comment));
-  document.getElementById("app").appendChild(post);
-});
+        response.data.slice().reverse().forEach((item, index) => {
+          const post = document.createElement("h3");
+          post.views= item.views
+          post.id = index;
+          post.textContent = item.title;
+          post.addEventListener('click', () => showContent(item.views,item.name, item.title, item.content, item.id, item.comment));
+          document.getElementById("app").appendChild(post);
+        });
       })
       .catch(error => {
         console.log('에러: ', error);
       });
   };
 
-  const showContent = (name, title, content, id, comments) => {
+  const showContent = (views,name, title, content, id, comments) => {
+    //xss막는기능
     let _content=content.replace(/\\(["'\\nt])/g, (match, p1) => {
       if (p1 === 'n') return '\n';
       if (p1 === 't') return '\t';
       return p1;
     });
+
+    //조회수 처리하는 기능
+    viewsUP(id)
+    console.log(views)
+    // 글 만들기
     document.getElementById("app").innerHTML = `
       <h1>${title}</h1>
-      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}</h3>
+      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수:${views}</h3>
       <h4 style="white-space: pre-line;" id="content">${_content}</h4>
     `;
   };
 
+  // 글 보면 서버에게 글id를 post로 전달. 서버는 받은 id의 글을찾아 조회수 ++해줌
+  const viewsUP = (id) => {
+    axios.post(`${server}/viewup`, { id: id }) // 서버 주소를 문자열 템플릿으로 변환하여 보내주시면 됩니다.
+      .then((res) => { console.log(res) })
+      .catch(err => { console.error("조회수 추가 에러: ", err); }); // 오류 처리 추가
+  };
   return (
     <div>
       <img src="https://i.ibb.co/swDxGsv/2023-10-27-083110.png" alt="logo" id="logo" />
@@ -168,14 +183,10 @@ response.data.slice().reverse().forEach((item, index) => {
       <nav id="navbar">
         {/* 네비게이션 바 요소 */}
       </nav>
-      <div id="navToApp"></div>
       <div id="app"></div>
     </div>
   );
 };
-  
 
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
 export default App;
