@@ -127,8 +127,24 @@ const App = () => {
       }
     })
   };
-
+  const krdate=()=>{
+    const koreanLocale = 'ko-KR';
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false,
+        timeZone: 'Asia/Seoul'
+      };
+      
+      const koreanTime = new Date().toLocaleString(koreanLocale, options);
+      return(koreanTime)
+  }
   const sendPost = () => {
+    console.log(krdate())
     const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const content = document.getElementById("contentForm").value.replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -136,7 +152,8 @@ const App = () => {
       name: name.replace(/(['"])/g, "\\$1"),
       title: title.replace(/(['"])/g, "\\$1"),
       content: content.replace(/(['"])/g, "\\$1"),
-      views: 0
+      views: 0,
+      date: krdate()
     };
 
     axios.post("https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/upload", send)
@@ -157,9 +174,10 @@ const App = () => {
         response.data.slice().reverse().forEach((item, index) => {
           const post = document.createElement("h3");
           post.views= item.views
+          post.date=item.date
           post.id = index;
           post.textContent = item.title;
-          post.addEventListener('click', () => showContent(item.views,item.name, item.title, item.content, item.id, item.comment));
+          post.addEventListener('click', () => showContent(item.date,item.views,item.name, item.title, item.content, item.id, item.comment));
           document.getElementById("app").appendChild(post);
         });
       })
@@ -168,7 +186,7 @@ const App = () => {
       });
   };
 
-  const showContent = (views,name, title, content, id, comments) => {
+  const showContent = (date,views,name, title, content, id, comments) => {
     //xss막는기능
     let _content=content.replace(/\\(["'\\nt])/g, (match, p1) => {
       if (p1 === 'n') return '\n';
@@ -179,10 +197,12 @@ const App = () => {
     //조회수 처리하는 기능
     viewsUP(id)
     console.log(views)
+    console.log(date)
     // 글 만들기
     document.getElementById("app").innerHTML = `
       <h1 id="title">${title}</h1>
-      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수:${views}</h3>
+      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}</h3>
+      <h3>날짜:${date}</h3>
       <h4 style="white-space: pre-line;" id="content">${_content}</h4>
     `;
   };
