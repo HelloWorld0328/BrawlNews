@@ -109,7 +109,23 @@ const App = () => {
     <button class="nocenter" id="send">저장</button>
     `;
     const send= document.getElementById("send")
-    send.addEventListener("click",()=>{sendPost()})
+    send.addEventListener("click",()=>{
+      const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const content = document.getElementById("contentForm").value.replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      if(name==""){
+        alert("이름을 입력해주세요.")
+      }
+      else if(title==""){
+        alert("재목을 입력해주세요.")
+      }
+      else if(content==""){
+        alert("내용을 입력해주세요.")
+      }
+      else if(name!="" & title!="" & content!=""){
+      sendPost()
+      }
+    })
   };
 
   const sendPost = () => {
