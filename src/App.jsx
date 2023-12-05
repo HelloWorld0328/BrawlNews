@@ -201,7 +201,7 @@ const App = () => {
     // 글 만들기
     document.getElementById("app").innerHTML = `
       <h1 id="title">${title}</h1>
-      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}</h3>
+      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수:${views}</h3>
       <h3>날짜:${date}</h3>
       <h4 style="white-space: pre-line;" id="content">${_content}</h4>
     `;
