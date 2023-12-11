@@ -1,8 +1,18 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 const App = () => {
-  const server="https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app"
+  const server="https://brawlnews.github.io/backends"
   // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  const quizList=[
+    {quiz:"브롤스타즈의 유일한 기본 브롤러는?", ans:"쉘리"},
+    {quiz:"브롤스타즈의 정식버전 출시년은?", ans:"2018년"},
+    {quiz:"브롤스타즈의 이용 등급은?", ans:"만 7세 이상 이용가"},
+    {quiz:"브롤스타즈가 지원하는 언어의 갯수는?", ans:"22개"},
+    {quiz:"브롤스타즈가 서비스중단된 국가중 이름이 3글자인 나라는?", ans:"러시아"},
+    {quiz:"브롤스타즈의 배급사의 영어이름은?", ans:"Supercell"}
+    
+  ]
 
   useEffect(() => {
     goHome()
@@ -143,6 +153,7 @@ const App = () => {
       const koreanTime = new Date().toLocaleString(koreanLocale, options);
       return(koreanTime)
   }
+  
   const sendPost = () => {
     console.log(krdate())
     const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -156,7 +167,7 @@ const App = () => {
       date: krdate()
     };
 
-    axios.post("https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/upload", send)
+    axios.post(server+"/upload", send)
       .then(response => {
         console.log("서버로부터의 응답: ", response);
         goHome();
@@ -168,7 +179,7 @@ const App = () => {
 
   const goHome = () => {
     page = "home";
-    axios.get('https://port-0-brawlnewsbackend-12fhqa2blnxrtsyp.sel5.cloudtype.app/posts')
+    axios.get(server+'/posts')
       .then(response => {
         document.getElementById("app").innerHTML = "";
         response.data.slice().reverse().forEach((item, index) => {
@@ -201,10 +212,10 @@ const App = () => {
     // 글 만들기
     document.getElementById("app").innerHTML = `
       <h1 id="title">${title}</h1>
-      <h3>글쓴이: ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id:${id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수:${views}</h3>
-      <h3>날짜:${date}</h3>
+      <h3>글쓴이 : ${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : ${id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : ${views}</h3>
+      <h3>날짜 : ${date}</h3>
       <h4 style="white-space: pre-line;" id="content">${_content}</h4>
-    `;
+    `; 
   };
 
   // 글 보면 서버에게 글id를 post로 전달. 서버는 받은 id의 글을찾아 조회수 ++해줌
@@ -213,6 +224,44 @@ const App = () => {
       .then((res) => { console.log(res) })
       .catch(err => { console.error("조회수 추가 에러: ", err); }); // 오류 처리 추가
   };
+
+  const goQuiz = () => {
+    // 1부터 10까지의 난수 생성
+    let min = 0;
+    let max = quizList.length - 1;
+    let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+  
+    const ask = quizList[randomNumber].quiz;
+    const ans = quizList[randomNumber].ans;
+    document.getElementById("app").innerHTML = `
+      <h1>브롤스타즈 퀴즈</h1>
+      <h3>질문:${ask}</h3>
+      <input class="nocenter" placeholder="정답입력" id="ansForm" type="text"><br><br>
+      <button class="nocenter" id="send">입력</button>
+    `;
+  
+    // useEffect를 이용하여 이벤트 핸들러 추가
+    
+      const handleClick = () => {
+        const userAnswer = document.getElementById("ansForm").value;
+        if (userAnswer === ans) {
+          alert("맞음");
+          goHome()
+        } else {
+          alert("틀림");
+        }
+      };
+  
+      document.getElementById("send").addEventListener("click", handleClick);
+  
+      return () => {
+        // Clean-up 함수 - 컴포넌트가 언마운트될 때 리스너 제거
+        document.getElementById("send").removeEventListener("click", handleClick);
+      };
+    
+  };
+  
+
   return (
     <div>
       <img src="https://i.ibb.co/swDxGsv/2023-10-27-083110.png" alt="logo" id="logo" />
@@ -221,6 +270,7 @@ const App = () => {
       <span className="nv nowrap" id="new" onClick={goNew}>작성&nbsp;&nbsp;</span>
       <span className="nv nowrap" id="brawlnews" onClick={showInfo}>정보&nbsp;&nbsp;</span>
       <span className="nv nowrap" id="shortkey" onClick={shortkey}>단축키&nbsp;&nbsp;</span>
+      <span className="nv nowrap" id="quiz" onClick={goQuiz}>퀴즈&nbsp;&nbsp;</span>
       <nav id="navbar">
         {/* 네비게이션 바 요소 */}
       </nav>
