@@ -1,5 +1,8 @@
+// Import Library
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
+// define variable
 const server="https://express.zandibatch.repl.co"
 const quizList=[
   {quiz:"브롤스타즈의 유일한 기본 브롤러는?", ans:"쉘리"},
@@ -12,13 +15,16 @@ const quizList=[
   {quiz:"쉘리는 처음부터 기본 지급을 했던 브롤러다? (O또는X로 대답)",ans:"O"},
   {quiz:"최초로 2만을 찍은 사람은 3인큐를 돌려서 찍었는데 그 팀큐중 1명도 최초 ?만을 찍었는데요, 그러면 몇만을 찍었을까요?",ans:"3만"},
   {quiz:"2만을 최초로 찍은 사람은 어느 나라 사람일까요?",ans:"한국인"}
-  
 ]
+
+/* define App component */
 const App=()=>{
+  /** Home component is load and show posts. */
   const Home = () => {
     const [posts, setPosts] = useState([]);
-  
+
     useEffect(() => {
+      // req posts(type:array) 
       axios.get(server + '/posts')
         .then(response => {
           const postsData = response.data.map((item, index) => (
@@ -30,8 +36,9 @@ const App=()=>{
           setPosts(postsData.reverse());
   
         })
-        .catch(error => {
-          console.error('에러: ', error);
+        // catch err
+        .catch(err => {
+          console.error('에러: ', err);
         });
     }, []);
   
@@ -42,8 +49,7 @@ const App=()=>{
     );
   };
 
-  let [html,SetHtml]=useState(<Home/>)
-
+  /** Hotkey component is let know Hotkeys. */
   const Hotkey=()=>{
     return(
       <div>
@@ -86,6 +92,7 @@ const App=()=>{
     )
   }
   
+  /** Info component is let know Brawlnews`s infomation. */
   const Info = () => {
     return (
       <div>
@@ -107,36 +114,7 @@ const App=()=>{
     )
   }
   
-
-  
-  const viewsUP = (id) => {
-    axios.post(`${server}/viewup`, { id: id }) // 서버 주소를 문자열 템플릿으로 변환하여 보내주시면 됩니다.
-      .then((res) => { console.log(res) })
-      .catch(err => { console.error("조회수 추가 에러: ", err); }); // 오류 처리 추가
-  };
-  
-  
-  const showContent = (date, views, name, title, content, id, comment) => {
-    let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
-      if (p1 === 'n') return '\n';
-      if (p1 === 't') return '\t';
-      return p1;
-    });
-  
-    viewsUP(id)
-  
-    console.log("쇼컨"+date+views+name+title+content+id)
-    // 이 부분에서 JSX 형식으로 반환하도록 수정
-    SetHtml(
-      <div>
-        <h1 id="title">{title}</h1>
-        <h3>글쓴이 : {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : {id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : {views}</h3>
-        <h3>날짜 : {date}</h3>
-        <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
-      </div>
-    );
-  };
-  
+  /** New component is help you write. */
   const New=()=>{
     const sendd=()=>{
       const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -169,7 +147,66 @@ const App=()=>{
       </div>
     )
   }
+
+  /** Quiz component is give a quiz. */
+  const Quiz=()=>{
+    let min = 0;
+    let max = quizList.length - 1;
+    let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   
+    const ask = quizList[randomNumber].quiz;
+    const ans = quizList[randomNumber].ans;
+    const handleClick = () => {
+      const userAnswer = document.getElementById("ansForm").value;
+      if (userAnswer === ans) {
+        alert("맞음");
+        Navigate('quiz')
+      } else {
+        alert("틀림");
+      }
+    };
+    return(
+      <div>
+        <h1>브롤스타즈 퀴즈</h1>
+        <h3>질문:{ask}</h3>
+        <input className="nocenter" placeholder="정답입력" id="ansForm" type="text"/><br/><br/>
+        <button className="nocenter" id="send" onClick={()=>handleClick()}>입력</button>
+      </div>
+    )
+  }
+
+  /**
+   * viewsUp function is increase views.
+   * @param {number} id 
+   */
+  const viewsUP = (id) => {
+    axios.post(`${server}/viewup`, { id: id })
+      .then((res) => { console.log(res) })
+      .catch(err => { console.error("조회수 추가 에러: ", err); });
+  };
+  
+  
+  const showContent = (date, views, name, title, content, id, comment) => {
+    let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
+      if (p1 === 'n') return '\n';
+      if (p1 === 't') return '\t';
+      return p1;
+    });
+  
+    viewsUP(id)
+  
+    console.log("쇼컨"+date+views+name+title+content+id)
+    SetHtml(
+      <div>
+        <h1 id="title">{title}</h1>
+        <h3>글쓴이 : {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : {id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : {views}</h3>
+        <h3>날짜 : {date}</h3>
+        <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
+      </div>
+    );
+  };
+  
+  /** sendPost function is upload post. */
   const sendPost = () => {
     console.log(krdate())
     try{
@@ -206,6 +243,11 @@ const App=()=>{
       });
     }catch{}
   };
+
+  /**
+   * krdate function is return korea`s date and time.
+   * @returns korea`s date and time
+   */
   const krdate=()=>{
     const koreanLocale = 'ko-KR';
       const options = {
@@ -223,6 +265,7 @@ const App=()=>{
       return(koreanTime)
   }
 
+  // This useEffect function is make can use Hotkey function.
   useEffect(() => {
     Navigate('home')
     document.addEventListener("keydown", handleKeyPress);
@@ -232,32 +275,11 @@ const App=()=>{
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const Quiz=()=>{
-    let min = 0;
-    let max = quizList.length - 1;
-    let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   
-    const ask = quizList[randomNumber].quiz;
-    const ans = quizList[randomNumber].ans;
-    const handleClick = () => {
-      const userAnswer = document.getElementById("ansForm").value;
-      if (userAnswer === ans) {
-        alert("맞음");
-        Navigate('quiz')
-      } else {
-        alert("틀림");
-      }
-    };
-    return(
-      <div>
-        <h1>브롤스타즈 퀴즈</h1>
-        <h3>질문:{ask}</h3>
-        <input className="nocenter" placeholder="정답입력" id="ansForm" type="text"/><br/><br/>
-        <button className="nocenter" id="send" onClick={()=>handleClick()}>입력</button>
-      </div>
-    )
-  }
-
+  /**
+   * handleKeyPress function is define Hotkeys.
+   * @param {string} event key`s value
+   */
   const handleKeyPress = (event) => {
     const { altKey, key } = event;
     if (altKey) {
@@ -283,7 +305,13 @@ const App=()=>{
     }
   };
 
+  /** html variable is set App`s html */
+  let [html,SetHtml]=useState(<Home/>)
 
+  /**
+   * routing function is route htmls
+   * @param {str} route route to move
+   */
   const routing=(route)=>{
     switch (route){
       
@@ -307,15 +335,19 @@ const App=()=>{
         break
     }
   }
+
+  /**
+   * Navigate function is move pages
+   * @param {str} navroute route to move
+   */
   const Navigate=(navroute)=>{
     routing(navroute)
   }
 
 
-
   return(
-    <div>
-      <div>
+    <div id="mainApp">
+      <div id="navbar">
         <img src="https://i.ibb.co/swDxGsv/2023-10-27-083110.png" alt="logo" id="logo" />
         <span className="nv nowrap" id="home" onClick={()=>Navigate('home')}>홈&nbsp;&nbsp;</span>
         <span className="nv nowrap" id="new" onClick={()=>{Navigate('new')}}>작성&nbsp;&nbsp;</span>
@@ -323,9 +355,11 @@ const App=()=>{
         <span className="nv nowrap" id="shortkey" onClick={()=>Navigate('hotkey')}>단축키&nbsp;&nbsp;</span>
         <span className="nv nowrap" id="quiz" onClick={()=>Navigate('quiz')}>퀴즈&nbsp;&nbsp;</span>
       </div>
+
       <br />
       <br />
       <br />
+
       <div id="app">
         {html}
       </div>
