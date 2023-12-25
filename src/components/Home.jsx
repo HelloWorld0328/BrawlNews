@@ -3,6 +3,7 @@ import axios from "axios";
 
 const server="https://express.zandibatch.repl.co"
 const Home = ({SetHtml}) => {
+  console.log("타입"+typeof(SetHtml))
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -10,7 +11,7 @@ const Home = ({SetHtml}) => {
       axios.get(server + '/posts')
         .then(response => {
           const postsData = response.data.map((item, index) => (
-            <h3 key={index} id={index} onClick={() => showContent(item.date, item.views, item.name, item.title, item.content, item.id, item.comment)}>
+            <h3 key={index} id={index} onClick={() => showContent(item.date, item.views, item.name, item.title, item.content, item.id,SetHtml)}>
               {item.title}
             </h3>
           ));
@@ -38,7 +39,8 @@ const Home = ({SetHtml}) => {
   };
   
   
-  const showContent = (date, views, name, title, content, id,{SetHtml}) => {
+  const showContent = (date, views, name, title, content, id,SetHtml) => {
+    console.log("타입:"+typeof(SetHtml))
     let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
       if (p1 === 'n') return '\n';
       if (p1 === 't') return '\t';
