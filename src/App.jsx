@@ -1,4 +1,4 @@
-// Import Library
+// import Library
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -54,38 +54,36 @@ const App=()=>{
     return(
       <div>
         <table>
-          <tbody>
           <tr>
-        <th>단축키</th>
-        <th>기능</th>
-        <th>특이사항</th>
-    </tr>
-    <tr>
-        <td>alt+h</td>
-        <td>홈으로 가기</td>
-        <td>홈일때 사용하면 글을 불러오는 기능으로 사용할수 있다.</td>
-    </tr>
-    <tr>
-        <td>alt+Enter</td>
-        <td>작성중이던 글 업로드</td>
-        <td>작성화면에서만 사용가능</td>
-    </tr>
-    <tr>
-        <td>alt+i</td>
-        <td>정보페이지로 가기</td>
-        <td>없음</td>
-    </tr>
-    <tr>
-        <td>alt+n</td>
-        <td>글 작성하기</td>
-        <td>작성화면에서 누르면 작성하던 글이 초기화되니 주의</td>
-    </tr>
-    <tr>
-        <td>alt+s</td>
-        <td>단축키 표시</td>
-        <td>없음</td>
-    </tr>
-          </tbody>
+              <th>단축키</th>
+              <th>기능</th>
+              <th>특이사항</th>
+          </tr>
+          <tr>
+              <td>alt+h</td>
+              <td>홈으로 가기</td>
+              <td>홈일때 사용하면 글을 불러오는 기능으로 사용할수 있다.</td>
+          </tr>
+          <tr>
+              <td>alt+Enter</td>
+              <td>작성중이던 글 업로드</td>
+              <td>작성화면에서만 사용가능</td>
+          </tr>
+          <tr>
+              <td>alt+i</td>
+              <td>정보페이지로 가기</td>
+              <td>없음</td>
+          </tr>
+          <tr>
+              <td>alt+n</td>
+              <td>글 작성하기</td>
+              <td>작성화면에서 누르면 작성하던 글이 초기화되니 주의</td>
+          </tr>
+          <tr>
+              <td>alt+s</td>
+              <td>단축키 표시</td>
+              <td>없음</td>
+          </tr>
         
         </table>
       </div>
@@ -97,9 +95,9 @@ const App=()=>{
     return (
       <div>
         <h1>브롤뉴스란?</h1>
-        <h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2>
-        <h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2>
-        <h2>주고 받을수 있게 도와줍니다.</h2>
+          <h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2>
+          <h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2>
+          <h2>주고 받을수 있게 도와줍니다.</h2>
         <br/>
         <h1>개발도구</h1>
           <h3>Made by 류동윤</h3>
@@ -116,7 +114,7 @@ const App=()=>{
   
   /** New component is help you write. */
   const New=()=>{
-    const sendd=()=>{
+    const send=()=>{
       const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       const content = document.getElementById("contentForm").value.replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -134,16 +132,11 @@ const App=()=>{
     }}
 
     return(
-      <div>
-        <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"/><br/><br/>
+      <div className="New">
+        <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"/>
         <input class="nocenter" placeholder="재목입력" id="titleForm" type="text"/><br/><br/>
-      
-        <textarea
-      className="nocenter"
-      placeholder="내용입력"
-      id="contentForm"
-      style={{ width: '80%', height: '150px' }} 
-    ></textarea><br /><br />        <button class="nocenter" id="send" onClick={()=>{sendd()}}>저장</button>
+        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '80%', height: '150px' }} ></textarea><br /><br />
+        <button class="nocenter" id="send" onClick={()=>{send()}}>저장</button>
       </div>
     )
   }
@@ -366,8 +359,5 @@ const App=()=>{
     </div>
   )
 }
-
-
- 
 
 export default App;
