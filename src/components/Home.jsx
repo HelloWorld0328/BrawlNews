@@ -23,6 +23,7 @@ const Home = ({SetHtml}) => {
         .catch(err => {
           console.error('에러: ', err);
         });
+        //eslint-disable-next-line
     }, []);
   
     return (
