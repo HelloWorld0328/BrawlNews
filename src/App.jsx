@@ -52,7 +52,6 @@ const App=()=>{
   /** Hotkey component is let know Hotkeys. */
   const Hotkey=()=>{
     return(
-      <div>
         <table>
           <tr>
               <th>단축키</th>
@@ -84,9 +83,7 @@ const App=()=>{
               <td>단축키 표시</td>
               <td>없음</td>
           </tr>
-        
         </table>
-      </div>
     )
   }
   
@@ -135,7 +132,7 @@ const App=()=>{
       <div className="New">
         <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"/>
         <input class="nocenter" placeholder="재목입력" id="titleForm" type="text"/><br/><br/>
-        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '80%', height: '150px' }} ></textarea><br /><br />
+        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '60%', height: '125px' }} ></textarea><br /><br />
         <button class="nocenter" id="send" onClick={()=>{send()}}>저장</button>
       </div>
     )
