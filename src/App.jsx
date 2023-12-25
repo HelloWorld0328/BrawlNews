@@ -2,6 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// import components
+import Hotkey from "./components/Hotkey"
+import Home from "./components/Home"
+import Info from "./components/Info"
+import New from "./components/New"
+import Quiz from "./components/Quiz";
+
 // define variable
 const server="https://express.zandibatch.repl.co"
 const quizList=[
@@ -19,188 +26,12 @@ const quizList=[
 
 /* define App component */
 const App=()=>{
-  /** Home component is load and show posts. */
-  const Home = () => {
-    const [posts, setPosts] = useState([]);
-
-    useEffect(() => {
-      // req posts(type:array) 
-      axios.get(server + '/posts')
-        .then(response => {
-          const postsData = response.data.map((item, index) => (
-            <h3 key={index} id={index} onClick={() => showContent(item.date, item.views, item.name, item.title, item.content, item.id, item.comment)}>
-              {item.title}
-            </h3>
-          ));
-  
-          setPosts(postsData.reverse());
-  
-        })
-        // catch err
-        .catch(err => {
-          console.error('에러: ', err);
-        });
-    }, []);
-  
-    return (
-      <div id="posts">
-        {posts}
-      </div>
-    );
-  };
-
-  /** Hotkey component is let know Hotkeys. */
-  const Hotkey=()=>{
-    return(
-        <table>
-          <tr>
-              <th>단축키</th>
-              <th>기능</th>
-              <th>특이사항</th>
-          </tr>
-          <tr>
-              <td>alt+h</td>
-              <td>홈으로 가기</td>
-              <td>홈일때 사용하면 글을 불러오는 기능으로 사용할수 있다.</td>
-          </tr>
-          <tr>
-              <td>alt+Enter</td>
-              <td>작성중이던 글 업로드</td>
-              <td>작성화면에서만 사용가능</td>
-          </tr>
-          <tr>
-              <td>alt+i</td>
-              <td>정보페이지로 가기</td>
-              <td>없음</td>
-          </tr>
-          <tr>
-              <td>alt+n</td>
-              <td>글 작성하기</td>
-              <td>작성화면에서 누르면 작성하던 글이 초기화되니 주의</td>
-          </tr>
-          <tr>
-              <td>alt+s</td>
-              <td>단축키 표시</td>
-              <td>없음</td>
-          </tr>
-        </table>
-    )
-  }
-  
-  /** Info component is let know Brawlnews`s infomation. */
-  const Info = () => {
-    return (
-      <div>
-        <h1>브롤뉴스란?</h1>
-          <h2>브롤뉴스는 브롤스타즈의 최신정보를 알려주고 </h2>
-          <h2>사람들이 서로 브롤스타즈에 관련한 정보를</h2>
-          <h2>주고 받을수 있게 도와줍니다.</h2>
-        <br/>
-        <h1>개발도구</h1>
-          <h3>Made by 류동윤</h3>
-          <h3>FrontEnd:React</h3>
-          <h3>BackEnd:Express</h3>
-          <br/>
-        <h1>깃허브</h1>
-          <h3><a href="https://github.com/HelloWorld0328">개발자</a></h3>
-          <h3><a href="https://github.com/HelloWorld0328/BrawlNews">프론트앤드</a></h3>
-          <h3><a href="https://github.com/HelloWorld0328/BrawlnewsBackend">백앤드</a></h3>
-      </div>
-    )
-  }
-  
-  /** New component is help you write. */
-  const New=()=>{
-    const send=()=>{
-      const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const content = document.getElementById("contentForm").value.replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      if(name===""){
-        alert("이름을 입력해주세요.")
-      }
-      else if(title===""){
-        alert("재목을 입력해주세요.")
-      }
-      else if(content===""){
-        alert("내용을 입력해주세요.")
-      }
-      else if(name!=="" & title!=="" & content!==""){
-      sendPost()
-    }}
-
-    return(
-      <div className="New">
-        <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"/>
-        <input class="nocenter" placeholder="재목입력" id="titleForm" type="text"/><br/><br/>
-        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '60%', height: '125px' }} ></textarea><br /><br />
-        <button class="nocenter" id="send" onClick={()=>{send()}}>저장</button>
-      </div>
-    )
-  }
-
-  /** Quiz component is give a quiz. */
-  const Quiz=()=>{
-    let min = 0;
-    let max = quizList.length - 1;
-    let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  
-    const ask = quizList[randomNumber].quiz;
-    const ans = quizList[randomNumber].ans;
-    const handleClick = () => {
-      const userAnswer = document.getElementById("ansForm").value;
-      if (userAnswer === ans) {
-        alert("맞음");
-        Navigate('quiz')
-      } else {
-        alert("틀림");
-      }
-    };
-    return(
-      <div>
-        <h1>브롤스타즈 퀴즈</h1>
-        <h3>질문:{ask}</h3>
-        <input className="nocenter" placeholder="정답입력" id="ansForm" type="text"/><br/><br/>
-        <button className="nocenter" id="send" onClick={()=>handleClick()}>입력</button>
-      </div>
-    )
-  }
-
-  /**
-   * viewsUp function is increase views.
-   * @param {number} id 
-   */
-  const viewsUP = (id) => {
-    axios.post(`${server}/viewup`, { id: id })
-      .then((res) => { console.log(res) })
-      .catch(err => { console.error("조회수 추가 에러: ", err); });
-  };
-  
-  
-  const showContent = (date, views, name, title, content, id, comment) => {
-    let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
-      if (p1 === 'n') return '\n';
-      if (p1 === 't') return '\t';
-      return p1;
-    });
-  
-    viewsUP(id)
-  
-    console.log("쇼컨"+date+views+name+title+content+id)
-    SetHtml(
-      <div>
-        <h1 id="title">{title}</h1>
-        <h3>글쓴이 : {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : {id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : {views}</h3>
-        <h3>날짜 : {date}</h3>
-        <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
-      </div>
-    );
-  };
-  
   /** sendPost function is upload post. */
+  const [html,SetHtml]=useState(<Home/>)
   const sendPost = () => {
     console.log(krdate())
     try{
-    const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const content = document.getElementById("contentForm").value.replace(/\n/g, "\\n").replace(/</g, '&lt;').replace(/>/g, '&gt;');
     
@@ -296,7 +127,6 @@ const App=()=>{
   };
 
   /** html variable is set App`s html */
-  let [html,SetHtml]=useState(<Home/>)
 
   /**
    * routing function is route htmls
@@ -306,7 +136,7 @@ const App=()=>{
     switch (route){
       
       case 'home':
-        SetHtml(<Home />)
+        SetHtml(<Home SetHtml={SetHtml}/>)
         break
       case 'hotkey':
         SetHtml(<Hotkey />)
@@ -315,13 +145,13 @@ const App=()=>{
         SetHtml(<Info />)
         break
       case 'new':
-        SetHtml(<New />)
+        SetHtml(<New krdate={krdate} sendPost={sendPost} Navigate={Navigate} server={server}/>)
         break
       case 'quiz':
-        SetHtml(<Quiz />)
+        SetHtml(<Quiz quizList={quizList} Navigate={Navigate}/>)
         break
       default:
-        SetHtml("그딴건 없다")
+        SetHtml("그딴건 없다 (http code 404)")
         break
     }
   }

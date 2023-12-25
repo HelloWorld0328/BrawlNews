@@ -5,10 +5,12 @@
     src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff') format('woff');
 }
 
+
+
 table {
   border-collapse: collapse;
-  border-radius: 10px;
   margin: 0 auto;
+  border-radius: 50px;
 }
 
 th, td {
@@ -17,9 +19,7 @@ th, td {
   text-align: left;
 }
 
-th, td {
-  border-radius: 10px;
-}
+
 
 .nocenter{
   text-align: left;
@@ -61,6 +61,15 @@ span{
 
 #titleForm{
   margin-left: 30px;
+}
+
+.gradient{
+  background: -webkit-linear-gradient(#ff6600, #d400ff);
+  -webkit-background-clip: border-box;
+  -moz-background-clip: border-box;
+  background-clip: border-box; 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 button{
@@ -107,3 +116,6 @@ textarea,input{
   padding-left: 125px;
 }
 
+th{
+  background: linear-gradient(#65abf1, #f279fa);
+}
