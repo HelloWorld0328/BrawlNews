@@ -27,7 +27,50 @@ const quizList=[
 /* define App component */
 const App=()=>{
   /** sendPost function is upload post. */
-  const [html,SetHtml]=useState(<Home/>)
+ 
+  
+  const showContent = (date, views, name, title, content, id) => {
+    console.log("타입:"+typeof(SetHtml))
+    let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
+      if (p1 === 'n') return '\n';
+      if (p1 === 't') return '\t';
+      return p1;
+    });
+  
+    viewsUP(id)
+  
+    console.log("쇼컨"+date+views+name+title+content+id)
+    SetHtml(
+      <div>
+        <h1 id="title">{title}</h1>
+        <h3>글쓴이 : {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : {id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : {views}</h3>
+        <h3>날짜 : {date}</h3>
+        <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
+      </div>
+    );}
+
+    
+  /**
+   * krdate function is return korea`s date and time.
+   * @returns korea`s date and time
+   */
+  const krdate=()=>{
+    const koreanLocale = 'ko-KR';
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false,
+        timeZone: 'Asia/Seoul'
+      };
+      
+      const koreanTime = new Date().toLocaleString(koreanLocale, options);
+      return(koreanTime)
+  }
+
   const sendPost = () => {
     console.log(krdate())
     try{
@@ -65,26 +108,14 @@ const App=()=>{
     }catch{}
   };
 
-  /**
-   * krdate function is return korea`s date and time.
-   * @returns korea`s date and time
-   */
-  const krdate=()=>{
-    const koreanLocale = 'ko-KR';
-      const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false,
-        timeZone: 'Asia/Seoul'
-      };
-      
-      const koreanTime = new Date().toLocaleString(koreanLocale, options);
-      return(koreanTime)
-  }
+
+  const viewsUP = (id) => {
+    axios.post(`${server}/viewup`, { id: id })
+      .then((res) => { console.log(res) })
+      .catch(err => { console.error("조회수 추가 에러: ", err); });
+  };
+  
+
 
   // This useEffect function is make can use Hotkey function.
   useEffect(() => {
@@ -128,6 +159,9 @@ const App=()=>{
 
   /** html variable is set App`s html */
 
+
+  const [html,SetHtml]=useState(<Home showContent={showContent}/>)
+
   /**
    * routing function is route htmls
    * @param {str} route route to move
@@ -136,7 +170,7 @@ const App=()=>{
     switch (route){
       
       case 'home':
-        SetHtml(<Home SetHtml={SetHtml}/>)
+        SetHtml(<Home showContent={showContent}/>)
         break
       case 'hotkey':
         SetHtml(<Hotkey />)
@@ -145,7 +179,7 @@ const App=()=>{
         SetHtml(<Info />)
         break
       case 'new':
-        SetHtml(<New krdate={krdate} sendPost={sendPost} Navigate={Navigate} server={server}/>)
+        SetHtml(<New Navigate={Navigate} sendPost={sendPost} krdate={krdate}/>)
         break
       case 'quiz':
         SetHtml(<Quiz quizList={quizList} Navigate={Navigate}/>)
