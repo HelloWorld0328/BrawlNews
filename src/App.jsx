@@ -10,8 +10,8 @@ import New from "./components/New"
 import Quiz from "./components/Quiz";
 
 // define variable
-// const server="https://express.zandibatch.repl.co"
-const server="http://localhost:3030"
+const server="https://express.zandibatch.repl.co"
+// const server="http://localhost:3030"
 const quizList=[
   {quiz:"브롤스타즈의 유일한 기본 브롤러는?", ans:"쉘리"},
   {quiz:"브롤스타즈의 정식버전 출시년은?", ans:"2018년"},
