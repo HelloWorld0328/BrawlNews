@@ -76,11 +76,12 @@ const App=()=>{
         <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
         <hr />
         <div className="viewComment">
-          {comment.map((val,idx) => (
-            <h3 key={idx}>
-              {val.name}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{val.content}
-            </h3>
-          ))}
+        {comment && Array.isArray(comment) && comment.map((val,idx) => (
+  <h3 key={idx}>
+    {val.name}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{val.content}
+  </h3>
+))}
+
         </div><br /><br /><br />
 
         <div className="comment">
