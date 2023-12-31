@@ -10,7 +10,8 @@ import New from "./components/New"
 import Quiz from "./components/Quiz";
 
 // define variable
-const server="https://express.zandibatch.repl.co"
+// const server="https://express.zandibatch.repl.co"
+const server="http://localhost:3030"
 const quizList=[
   {quiz:"브롤스타즈의 유일한 기본 브롤러는?", ans:"쉘리"},
   {quiz:"브롤스타즈의 정식버전 출시년은?", ans:"2018년"},
@@ -26,17 +27,44 @@ const quizList=[
 
 /* define App component */
 const App=()=>{
-  /** sendPost function is upload post. */
- 
+
+  const sendComment= (id,date, views, name, title, content,comment)=>{
+    const commentName=document.getElementById('inputCommentName').value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const commentContent=document.getElementById('inputCommentContent').value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if(commentName===""){
+      alert("이름을 입력해주세요.")
+    }
+    else if(commentContent===""){
+      alert("댓글 내용을 입력해주세요.")
+    }
+    else if(commentName!=="" & commentContent!==""){
+      const send={
+        name:commentName.replace(/(['"])/g, "\\$1"),
+        content:commentContent.replace(/(['"])/g, "\\$1"),
+        id:id
+      }
+      axios.post(server+"/uploadcomment", send)
+      .then(response => {
+        console.log("서버로부터의 응답: ", response);
+        alert("댓글이 작성되었습니다.")
+        showContent(date,views,name,title,content,id,comment)
+      })
+      .catch(error => {
+        console.error("오류 발생: ", error);
+      });
+    }
   
-  const showContent = (date, views, name, title, content, id) => {
+  }
+  const showContent = (date, views, name, title, content, id,comment) => {
     console.log("타입:"+typeof(SetHtml))
     let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
       if (p1 === 'n') return '\n';
       if (p1 === 't') return '\t';
       return p1;
     });
-  
+    
+
+    
     viewsUP(id)
   
     console.log("쇼컨"+date+views+name+title+content+id)
@@ -46,6 +74,22 @@ const App=()=>{
         <h3>글쓴이 : {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : {id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : {views}</h3>
         <h3>날짜 : {date}</h3>
         <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
+        <hr />
+        <div className="viewComment">
+          {comment.map((val,idx) => (
+            <h3 key={idx}>
+              {val.name}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{val.content}
+            </h3>
+          ))}
+        </div><br /><br /><br />
+
+        <div className="comment">
+          <div className="InputComment">
+          <input id="inputCommentName" placeholder="이름입력" type="text"/><br />
+          <textarea style={{ width: '28%', height: '75px' }} type="text" id="inputCommentContent" placeholder="댓글입력"></textarea>
+          <button id="commentSend" className="nocenter" onClick={()=>sendComment(id)}>등록</button>
+          </div>
+        </div>
       </div>
     );}
 
@@ -160,7 +204,7 @@ const App=()=>{
   /** html variable is set App`s html */
 
 
-  const [html,SetHtml]=useState(<Home showContent={showContent}/>)
+  const [html,SetHtml]=useState(<Home showContent={showContent} server={server}/>)
 
   /**
    * routing function is route htmls
@@ -170,7 +214,7 @@ const App=()=>{
     switch (route){
       
       case 'home':
-        SetHtml(<Home showContent={showContent}/>)
+        SetHtml(<Home showContent={showContent} server={server}/>)
         break
       case 'hotkey':
         SetHtml(<Hotkey />)

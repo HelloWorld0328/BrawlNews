@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const server="https://express.zandibatch.repl.co"
+// const server="https://express.zandibatch.repl.co"
 
 
-const Home = ({showContent}) => {
+const Home = ({showContent,server}) => {
   console.log("ttt:"+typeof(showContent))
   const [posts, setPosts] = useState([]);
 
@@ -13,7 +13,7 @@ const Home = ({showContent}) => {
       axios.get(server + '/posts')
         .then(response => {
           const postsData = response.data.map((item, index) => (
-            <h3 key={index} id={index} onClick={() => showContent(item.date, item.views, item.name, item.title, item.content, item.id)}>
+            <h3 key={index} id={index} onClick={() => showContent(item.date, item.views, item.name, item.title, item.content, item.id, item.comment)}>
               {item.title}
             </h3>
           ));

@@ -79,7 +79,7 @@ button{
 	transition:0.3s;
 	position: absolute;
 	left:50%;
-	top:50%;
+	/* top:50%; */
   padding-left: 43px;
 	transform: translate(-50%,-50%);
 }
@@ -113,4 +113,8 @@ textarea,input{
 
 th{
   background: linear-gradient(#65abf1, #f279fa);
+}
+
+#commentSend{
+  margin-top: 10%;
 }

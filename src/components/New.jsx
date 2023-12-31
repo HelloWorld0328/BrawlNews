@@ -22,8 +22,8 @@ const New=({Navigate,krdate,sendPost})=>{
       <div className="New">
         <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"/>
         <input class="nocenter" placeholder="재목입력" id="titleForm" type="text"/><br/><br/>
-        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '60%', height: '125px' }} ></textarea><br /><br />
-        <button class="nocenter" id="send" onClick={()=>{send()}}>저장</button>
+        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '60%', height: '125px' }} ></textarea><br /><br /><br />
+        <button class="nocenter" id="send" onClick={()=>{send()}}>등록</button>
       </div>
     )
   }
