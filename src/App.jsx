@@ -38,6 +38,7 @@ const App=()=>{
       alert("댓글 내용을 입력해주세요.")
     }
     else if(commentName!=="" & commentContent!==""){
+      console.log("댓글달림")
       const send = {
         name: commentName.replace(/(['"])/g, "\\$1"),
         content: commentContent.replace(/(['"])/g, "\\$1"),
@@ -47,6 +48,7 @@ const App=()=>{
       .then(response => {
         console.log("서버로부터의 응답: ", response);
         alert("댓글이 작성되었습니다.")
+        Navigate('home');
         showContent(date,views,name,title,content,id,comment)
       })
       .catch(error => {
@@ -74,7 +76,7 @@ const App=()=>{
         <h3>글쓴이 : {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id : {id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회수 : {views}</h3>
         <h3>날짜 : {date}</h3>
         <h4 style={{ whiteSpace: 'pre-line' }} id="content">{_content}</h4>
-        {/* <hr />
+        <hr />
         <div className="viewComment">
         {comment && Array.isArray(comment) && comment.map((val,idx) => (
   <h3 key={idx}>
@@ -90,7 +92,7 @@ const App=()=>{
           <textarea style={{ width: '28%', height: '75px' }} type="text" id="inputCommentContent" placeholder="댓글입력"></textarea>
           <button id="commentSend" className="nocenter" onClick={()=>sendComment(id)}>등록</button>
           </div>
-        </div> */}
+        </div>
       </div>
     );}
 
