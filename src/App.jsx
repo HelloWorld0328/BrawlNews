@@ -89,7 +89,7 @@ const App=()=>{
         <div className="comment">
           <div className="InputComment">
           <input id="inputCommentName" placeholder="이름입력" type="text"/><br />
-          <textarea style={{ width: '28%', height: '75px' }} type="text" id="inputCommentContent" placeholder="댓글입력"></textarea>
+          <textarea style={{ width: '28%', height: '75px' }} type="text" id="inputCommentContent" placeholder="댓글입력"></textarea><br /><br /><br />  
           <button id="commentSend" className="nocenter" onClick={()=>sendComment(id)}>등록</button>
           </div>
         </div>
