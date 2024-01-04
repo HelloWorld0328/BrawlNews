@@ -62,8 +62,11 @@ const App=()=>{
     let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
       if (p1 === 'n') return '\n';
       if (p1 === 't') return '\t';
+      if (p1 === '\\') return '\\\\'; // 백슬래시 처리
+      if (p1 === '<') return '&lt;'; // 부등호(`<`) 처리
+      if (p1 === '>') return '&gt;'; // 부등호(`>`) 처리
       return p1;
-    });
+  });
     
 
     
