@@ -10,7 +10,7 @@ import New from "./components/New"
 import Quiz from "./components/Quiz";
 
 // define variable
-const server="https://bnbackend.onrender.com/"
+const server="https://bnbackend.onrender.com"
 // const server="http://localhost:3030"
 const quizList=[
   {quiz:"브롤스타즈의 유일한 기본 브롤러는?", ans:"쉘리"},
