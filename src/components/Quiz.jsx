@@ -35,7 +35,7 @@ const Quiz=({Navigate})=>{
       <div>
         <h1 className="gradient">브롤스타즈 퀴즈</h1>
         <h3>질문:{ask}</h3>
-        <input className="nocenter" placeholder="정답입력" id="ansForm" type="text"/><br/><br /><br/>
+        <input className="nocenter" placeholder="정답입력" id="ansForm" type="text" autocomplete="off"/><br/><br /><br/>
         <button className="nocenter" id="send" onClick={()=>handleClick()}>입력</button>
       </div>
     )
