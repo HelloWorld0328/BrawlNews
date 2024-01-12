@@ -21,10 +21,10 @@ const New=({Navigate,krdate,sendPost})=>{
 
     return(
       <div className="New">
-        <input class="nocenter" placeholder="이름입력" id="nameForm" type="text"/>
-        <input class="nocenter" placeholder="재목입력" id="titleForm" type="text"/><br/><br/>
-        <textarea className="nocenter" placeholder="내용입력" id="contentForm" style={{ width: '60%', height: '125px' }} ></textarea><br /><br /><br />
-        <button class="nocenter" id="send" onClick={()=>{send()}}>등록</button>
+        <input className="nocenter" placeholder="이름입력" id="nameForm" type="text" autocomplete="off"/>
+        <input className="nocenter" placeholder="재목입력" id="titleForm" type="text" autocomplete="off"/><br/><br/>
+        <textarea className="nocenter" placeholder="내용입력" id="contentForm" autocomplete="off" style={{ width: '60%', height: '125px' }} ></textarea><br /><br /><br />
+        <button className="nocenter" id="send" onClick={()=>{send()}}>등록</button>
       </div>
     )
   }
