@@ -14,7 +14,7 @@ const server="https://bnbackend.onrender.com"
 // const server="http://localhost:3030"
 
 
-/* define App component */
+
 const App=()=>{
 
   const sendComment= (id,date, views, name, title, content,comment)=>{
@@ -51,9 +51,9 @@ const App=()=>{
     let _content = content.replace(/\\(["'\\nt])/g, (match, p1) => {
       if (p1 === 'n') return '\n';
       if (p1 === 't') return '\t';
-      if (p1 === '\\') return '\\\\'; // 백슬래시 처리
-      if (p1 === '&lt;') return '<'; // 부등호(`<`) 처리
-      if (p1 === '&gt;') return '>;'; // 부등호(`>`) 처리
+      if (p1 === '\\') return '\\\\';
+      if (p1 === '&lt;') return '<';
+      if (p1 === '&gt;') return '>;';
       return p1;
   });
     
@@ -78,7 +78,7 @@ const App=()=>{
 
         <div className="comment">
           <div className="InputComment">
-          <input id="inputCommentName" placeholder="이름입력" type="text"/><br />
+          <input id="inputCommentName" placeholder="이름입력" type="text" autocomplete="off"/><br />
           <textarea style={{ width: '50%', height: '75px' }} type="text" id="inputCommentContent" placeholder="댓글입력"></textarea><br /><br /><br />  
           <button id="commentSend" className="nocenter" onClick={()=>sendComment(id)}>등록</button>
           </div>
@@ -88,7 +88,7 @@ const App=()=>{
 
     
   /**
-   * 한국날짜 
+   * 한국날짜 리턴하는 함수
    * @returns 한국날짜
    */
   const krdate=()=>{
@@ -200,7 +200,7 @@ const App=()=>{
    * 라우트 하는거
    * @param {str} route
    */
-  const routing=(route)=>{
+  const Navigate=(route)=>{
     switch (route){
       
       case 'home':
@@ -219,18 +219,11 @@ const App=()=>{
         SetHtml(<Quiz Navigate={Navigate}/>)
         break
       default:
-        SetHtml("없음;;")
+        SetHtml(`${route}라는 경로는 없다`)
         break
     }
   }
 
-  /**
-   * routing함수와 합쳐도 상관X일듯
-   * @param {str} navroute 갈곳
-   */
-  const Navigate=(navroute)=>{
-    routing(navroute)
-  }
 
 
   return(
