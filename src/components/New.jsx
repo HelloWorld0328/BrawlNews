@@ -1,6 +1,7 @@
 import React from "react";
 
 const New=({Navigate,krdate,sendPost})=>{
+    /** 유저가 쓴거 가저와서 올리는거 */
     const send=()=>{
       const name = document.getElementById("nameForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       const title = document.getElementById("titleForm").value.replace(/</g, '&lt;').replace(/>/g, '&gt;');

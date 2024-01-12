@@ -9,12 +9,11 @@ const Info = () => {
           <h2>주고 받을수 있게 도와줍니다.</h2>
         <br/>
         <h1>개발도구</h1>
-          <h3>Made by 류동윤</h3>
           <h3>FrontEnd:React</h3>
           <h3>BackEnd:Express</h3>
           <br/>
         <h1>깃허브</h1>
-          <h3><a href="https://github.com/HelloWorld0328">개발자</a></h3>
+          <h3><a href="https://github.com/HelloWorld0328">만든이</a></h3>
           <h3><a href="https://github.com/HelloWorld0328/BrawlNews">프론트앤드</a></h3>
           <h3><a href="https://github.com/HelloWorld0328/BrawlnewsBackend">백앤드</a></h3>
       </div>

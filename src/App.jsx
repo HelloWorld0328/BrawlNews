@@ -1,29 +1,18 @@
-// import Library
+// 라이브러리 임포트
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-// import components
+// 컴포넌트 임포트하는거
 import Hotkey from "./components/Hotkey"
 import Home from "./components/Home"
 import Info from "./components/Info"
 import New from "./components/New"
 import Quiz from "./components/Quiz";
 
-// define variable
+// 서버주소
 const server="https://bnbackend.onrender.com"
 // const server="http://localhost:3030"
-const quizList=[
-  {quiz:"브롤스타즈의 유일한 기본 브롤러는?", ans:"쉘리"},
-  {quiz:"브롤스타즈의 정식버전 출시년은?", ans:"2018년"},
-  {quiz:"브롤스타즈의 이용 등급은?", ans:"만 7세 이상 이용가"},
-  {quiz:"브롤스타즈가 지원하는 언어의 갯수는?", ans:"22개"},
-  {quiz:"브롤스타즈가 서비스중단된 국가중 이름이 3글자인 나라는?", ans:"러시아"},
-  {quiz:"브롤스타즈의 배급사의 영어이름은?", ans:"Supercell"},
-  {quiz:"레온은 브롤스타즈 처음부터 나온 브롤러일까? (O또는X로 대답)",ans:"O"},
-  {quiz:"쉘리는 처음부터 기본 지급을 했던 브롤러다? (O또는X로 대답)",ans:"O"},
-  {quiz:"최초로 2만을 찍은 사람은 3인큐를 돌려서 찍었는데 그 팀큐중 1명도 최초 ?만을 찍었는데요, 그러면 몇만을 찍었을까요?",ans:"3만"},
-  {quiz:"2만을 최초로 찍은 사람은 어느 나라 사람일까요?",ans:"한국인"}
-]
+
 
 /* define App component */
 const App=()=>{
@@ -42,7 +31,7 @@ const App=()=>{
       const send = {
         name: commentName.replace(/(['"])/g, "\\$1"),
         content: commentContent.replace(/(['"])/g, "\\$1"),
-        postId: id // 댓글을 달 포스트의 ID 전달
+        postId: id
       };
       axios.post(server+"/uploadcomment", send)
       .then(response => {
@@ -71,8 +60,6 @@ const App=()=>{
 
     
     viewsUP(id)
-  
-    console.log("쇼컨"+date+views+name+title+content+id)
     SetHtml(
       <div>
         <h1 id="title">{title}</h1>
@@ -101,8 +88,8 @@ const App=()=>{
 
     
   /**
-   * krdate function is return korea`s date and time.
-   * @returns korea`s date and time
+   * 한국날짜 
+   * @returns 한국날짜
    */
   const krdate=()=>{
     const koreanLocale = 'ko-KR';
@@ -167,7 +154,7 @@ const App=()=>{
   
 
 
-  // This useEffect function is make can use Hotkey function.
+  // 단축키 할때 필요한 useEffect
   useEffect(() => {
     Navigate('home')
     document.addEventListener("keydown", handleKeyPress);
@@ -179,8 +166,8 @@ const App=()=>{
   }, []);
   
   /**
-   * handleKeyPress function is define Hotkeys.
-   * @param {string} event key`s value
+   * 단축키
+   * @param {string} event 입력한거
    */
   const handleKeyPress = (event) => {
     const { altKey, key } = event;
@@ -207,21 +194,18 @@ const App=()=>{
     }
   };
 
-  /** html variable is set App`s html */
-
-
   const [html,SetHtml]=useState(<Home showContent={showContent} server={server}/>)
 
   /**
-   * routing function is route htmls
-   * @param {str} route route to move
+   * 라우트 하는거
+   * @param {str} route
    */
   const routing=(route)=>{
     switch (route){
       
       case 'home':
-        SetHtml(<Home showContent={showContent} server={server}/>)
-        break
+        SetHtml(<Home showContent={showContent} server={server}/>);
+        break;
       case 'hotkey':
         SetHtml(<Hotkey />)
         break
@@ -232,17 +216,17 @@ const App=()=>{
         SetHtml(<New Navigate={Navigate} sendPost={sendPost} krdate={krdate}/>)
         break
       case 'quiz':
-        SetHtml(<Quiz quizList={quizList} Navigate={Navigate}/>)
+        SetHtml(<Quiz Navigate={Navigate}/>)
         break
       default:
-        SetHtml("그딴건 없다 (http code 404)")
+        SetHtml("없음;;")
         break
     }
   }
 
   /**
-   * Navigate function is move pages
-   * @param {str} navroute route to move
+   * routing함수와 합쳐도 상관X일듯
+   * @param {str} navroute 갈곳
    */
   const Navigate=(navroute)=>{
     routing(navroute)
