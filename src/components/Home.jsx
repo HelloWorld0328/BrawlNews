@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-// const server="https://express.zandibatch.repl.co"
-
 
 const Home = ({showContent,server}) => {
   console.log("ttt:"+typeof(showContent))
   const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-      // req posts(type:array) 
+      // Get요청 보내기
       axios.get(server + '/posts')
         .then(response => {
           const postsData = response.data.map((item, index) => (
@@ -21,7 +19,7 @@ const Home = ({showContent,server}) => {
           setPosts(postsData.reverse());
   
         })
-        // catch err
+        // 에러처리
         .catch(err => {
           console.error('에러: ', err);
         });
